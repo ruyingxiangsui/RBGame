@@ -31,27 +31,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Help extends Activity {
-
+	private int loaded_picture = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
-		Button mReturn = (Button) findViewById(R.id.buttonReturnfromhelp);
 		final ImageView mImageView = (ImageView) findViewById(R.id.imageView1);
-		mReturn.setOnClickListener(new Button.OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Help.this.finish();
-			}
-			
-		});
+		loaded_picture = 1;
+		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.p1);
+		mImageView.setImageBitmap(bmp);
+		
 		mImageView.setOnClickListener(new ImageView.OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.yellowstar);
+				Bitmap bmp = null;
+				switch (loaded_picture) {
+				    case 1: 
+						bmp = BitmapFactory.decodeResource(getResources(), R.drawable.p2);
+						loaded_picture = 2;
+						
+						break;
+				    case 2:bmp = BitmapFactory.decodeResource(getResources(), R.drawable.p3);
+				        loaded_picture = 3;
+				        break;
+				    case 3:bmp = BitmapFactory.decodeResource(getResources(), R.drawable.p4);
+				        loaded_picture = 4;
+				        break;
+				    case 4:
+			            Help.this.finish();			        
+					break;
+				}
 				mImageView.setImageBitmap(bmp);
 			}
 			

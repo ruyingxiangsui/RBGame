@@ -183,9 +183,9 @@ public class viewChoose extends View implements OnTouchListener{
             	if (dy <-iconsize) continue;
             	if (dy>viewh) continue;
             	if (doneidlist[i])
-            	canvas.drawBitmap(bitmap1, dx, dy,mPaint);
-            	else
             	canvas.drawBitmap(bitmap2, dx, dy,mPaint);
+            	else
+            	canvas.drawBitmap(bitmap1, dx, dy,mPaint);
             	
             	canvas.drawText(String.valueOf(i+1), dx+iconsize*5/8-String.valueOf(i).length()*iconsize/8, dy+iconsize*5/8, font);
             	
