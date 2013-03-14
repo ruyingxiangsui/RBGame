@@ -24,6 +24,7 @@ public class viewChoose extends View implements OnTouchListener{
 	private int vieww, viewh;
 	private int iconsize;
 	private int isdown;
+	public boolean [] doneidlist;
 	public boolean onTouch(View v, MotionEvent event) {
 					// TODO Auto-generated method stub
 					float pX,pY;
@@ -32,7 +33,7 @@ public class viewChoose extends View implements OnTouchListener{
 						pX = event.getX();  pY = event.getY();
 						starttouchX = pX; starttouchY = pY;
 						isdown = 1;
-						System.out.println(pX);
+						//System.out.println(pX);
 						invalidate();
 						return true;
 						
@@ -87,7 +88,7 @@ public class viewChoose extends View implements OnTouchListener{
 	    private int get_todo(){
 	       return maxplayed;
 	    }
-	    private int get_count() {
+	    public int get_count() {
 	    	return count = 100;
 	    }
 	    private int get_column(){
@@ -97,12 +98,31 @@ public class viewChoose extends View implements OnTouchListener{
 	       return column;
 	    }
 	    private Bitmap bitmap1=null, bitmap2=null, bitmap3=null;
+	    private String stringschool = null, stringID = null, IDschoolname = null;
 		private void mydetails(){
 			setOnTouchListener(this);
 			//canvas.drawBitmap(bitmap, (int) starttouchX,(int) starttouchY, null);
+
+    		Bundle bundle = (((Activity) this.getContext()).getIntent().getExtras());
+    		stringschool = bundle.getString("school");
+    		stringID =  bundle.getString("ID");
+    		IDschoolname = stringID+stringschool;
+    		
 			shiftY = 0; deltaY = 0;
 			Levelchecker ck = new Levelchecker((Activity) this.getContext());
 			maxplayed = ck.get_maxplayed();
+			doneidlist = new boolean[get_count()];
+			
+
+			String [] flist = ((Activity) this.getContext()).fileList();
+			for (int i = 0 ; i < flist.length; i++)
+				if (flist[i].startsWith("S"+IDschoolname)) {
+					int pos1 = flist[i].indexOf(".");
+					int pos2 = flist[i].indexOf(".",pos1+1);
+					String cc = flist[i].substring(pos1+1,pos2);
+					doneidlist[Integer.parseInt(cc)-1] = true;
+				};
+			
 		} 
 		public viewChoose(Context context) {
 			super(context);	 
@@ -136,13 +156,13 @@ public class viewChoose extends View implements OnTouchListener{
 			
 			get_count();
 			iconsize = vieww / get_column();	
-			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.lock1);
+			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.boxgreen);
 			int oldwidth = bmp.getWidth();
 			float ratio = (float) iconsize / oldwidth;
             Matrix matrix = new Matrix(); matrix.postScale(ratio, ratio);
             bitmap1 = Bitmap.createBitmap(bmp,0,0,oldwidth,oldwidth,matrix,true);
-            bitmap2 = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lock2),0,0,oldwidth,oldwidth,matrix,true);
-            bitmap3 = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.lock3),0,0,oldwidth,oldwidth,matrix,true);
+            bitmap2 = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.boxblue),0,0,oldwidth,oldwidth,matrix,true);
+            bitmap3 = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.boxgreen),0,0,oldwidth,oldwidth,matrix,true);
             font = new Paint();
             font.setColor(Color.RED);
             font.setTextSize(iconsize/3);
@@ -162,12 +182,10 @@ public class viewChoose extends View implements OnTouchListener{
             	int dy = i / get_column() * iconsize + shiftY+deltaY;
             	if (dy <-iconsize) continue;
             	if (dy>viewh) continue;
-            	if (i<get_todo())
+            	if (doneidlist[i])
             	canvas.drawBitmap(bitmap1, dx, dy,mPaint);
-            	else if (i==get_todo())
+            	else
             	canvas.drawBitmap(bitmap2, dx, dy,mPaint);
-            	else 
-            	canvas.drawBitmap(bitmap3, dx, dy,mPaint);
             	
             	canvas.drawText(String.valueOf(i+1), dx+iconsize*5/8-String.valueOf(i).length()*iconsize/8, dy+iconsize*5/8, font);
             	

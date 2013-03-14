@@ -83,8 +83,8 @@ public class Welcome extends Activity {
 			// TODO Auto-generated catch block
 			mTextSchool.setText("BUAA");
 			mTextID.setText("TEST");
-			mTextIP.setText("218.241.236.109");
-			mTextport.setText("8080");
+			mTextIP.setText("AUTO");
+			mTextport.setText("AUTO");
 		}
 		
 		
@@ -92,12 +92,31 @@ public class Welcome extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				if (mTextID.getText().toString().contains(".") || mTextSchool.getText().toString().contains("."))
+				{
+					new AlertDialog.Builder(Welcome.this).setTitle("ERROR")
+					.setMessage("Invalid school/ID")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							
+						}
+					}).show();
+					return;
+				}
 				Intent intent = new Intent();
 				intent.setClass(Welcome.this, Choose.class);
 				Bundle bundle = new Bundle();
 				bundle.putString("school", mTextSchool.getText().toString());
 				bundle.putString("ID", mTextID.getText().toString());
-				bundle.putString("IP", mTextIP.getText().toString());
+				if (mTextIP.getText().toString().equals("AUTO"))
+					bundle.putString("IP", "218.241.236.109");
+				else bundle.putString("IP", mTextIP.getText().toString());
+				if (mTextport.getText().toString().equals("AUTO"))
+					bundle.putString("port", "8080");
+				else 
 				bundle.putString("port", mTextport.getText().toString());
 				save_instance();
 				intent.putExtras(bundle);
@@ -230,7 +249,11 @@ public class Welcome extends Activity {
 		@Override
 		public void run() {
 			isOK = new String();
-			String url = "http://"+mTextIP.getText().toString()+":"+mTextport.getText().toString()+"/save.php";
+			String server = mTextIP.getText().toString();
+			String port = mTextport.getText().toString();
+			if (server.equals("AUTO")) server = "218.241.236.109";
+			if (port.equals("AUTO")) port = "8080";
+			String url = "http://"+server+":"+port+"/save.php";
 			 
 			HttpPost httpRequest = new HttpPost(url);
 			ArrayList <NameValuePair> paras = new ArrayList<NameValuePair>();

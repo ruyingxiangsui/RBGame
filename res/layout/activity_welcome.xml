@@ -40,23 +40,6 @@
         android:layout_marginTop="22dp"
         android:text="ID" />
 
-     <TextView
-         android:id="@+id/textView3"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/textchoose1"
-         android:layout_below="@+id/textView2"
-         android:layout_marginTop="22dp"
-         android:text="Server" />
-
-     <TextView
-         android:id="@+id/textView4"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/textchoose1"
-         android:layout_below="@+id/textView3"
-         android:layout_marginTop="22dp"
-         android:text="port" />
 
      <EditText
          android:id="@+id/textID"
@@ -100,15 +83,6 @@
          android:ems="10" />
 
      <Button
-         android:id="@+id/buttonPlay"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/textPort"
-         android:layout_centerHorizontal="true"
-         android:layout_marginTop="40dp"
-         android:text="Play" />
-
-     <Button
          android:id="@+id/buttonHelp"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -126,4 +100,27 @@
          android:layout_marginTop="26dp"
          android:text="Upload" />
 
+     <Button
+         android:id="@+id/buttonPlay"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/textID"
+         android:layout_centerHorizontal="true"
+         android:text="Play" />
+     
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_below="@+id/buttonUpload"
+        android:text="Server" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textchoose1"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="22dp"
+        android:text="ID" />
 </RelativeLayout>

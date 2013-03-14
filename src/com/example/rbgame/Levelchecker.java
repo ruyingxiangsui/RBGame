@@ -17,8 +17,9 @@ public class Levelchecker {
 		maxplayed = read_it();
 	}
 	public int get_maxplayed(){
-		maxplayed = read_it();
-		return maxplayed;
+		return 100;
+		//maxplayed = read_it();
+		//return maxplayed;
 	}
 	private int read_it() {
 		// TODO Auto-generated method stub

@@ -264,7 +264,7 @@ public class Graph {
 		else return false;
 	}
 	private boolean savehistory(){
-		String fname = "S"+uname+String.valueOf(timeCreated)+"T"+String.valueOf((new Random()).nextInt(1000))+".rs";
+		String fname = "S"+uname+"."+String.valueOf(level)+"."+String.valueOf(timeCreated)+"T"+String.valueOf((new Random()).nextInt(1000))+".rs";
 		try {
 			FileOutputStream os = owner.openFileOutput(fname,0);
 

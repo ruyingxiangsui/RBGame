@@ -8,11 +8,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Help" >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/buttonReturnfromhelp"
@@ -22,13 +25,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="47dp"
         android:text="Return" />
-
-    <TextView
-        android:id="@+id/textHelp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="108dp"
-        android:text="TextView" />
-
+    
 </RelativeLayout>
