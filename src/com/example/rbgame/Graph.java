@@ -302,7 +302,7 @@ public class Graph {
 
 	private int getIdByXY(int X, int Y){
 		float min = 2147483412; int id =-1;
-		for (int i = 0 ; i < size; i++) {
+		for (int i = 0 ; i < size; i++) if (dotExist[i]){
 			float dist = (X-dotX[i])*(X-dotX[i]) + (Y-dotY[i])*(Y-dotY[i]);
 			if (dist < min) { id = i; min = dist;}
 		}

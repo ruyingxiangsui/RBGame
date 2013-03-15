@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import org.apache.http.HttpResponse;
@@ -301,12 +302,33 @@ public class Welcome extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 					}
 				}).show();
-				String [] flist = Welcome.this.fileList();
-					uploadstr = new String();
-					for (int i = 0 ; i < flist.length; i++)
-						if (flist[i].startsWith("S")) 
-							Welcome.this.deleteFile(flist[i]);
 					buttonUpload.setEnabled(false); 
+
+					try {
+
+						FileOutputStream os;
+						os = Welcome.this.openFileOutput("U"
+						    +(new SimpleDateFormat("MMddhhmmss").format(new Date())),0);
+
+						BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os));
+						
+						br.write(uploadstr);
+						br.close();
+						os.close();
+
+						String [] flist = Welcome.this.fileList();
+							uploadstr = new String();
+							for (int i = 0 ; i < flist.length; i++)
+								if (flist[i].startsWith("S")) 
+									Welcome.this.deleteFile(flist[i]);
+							
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				return;
 			}
 			if (msg.what >=0){
