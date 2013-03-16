@@ -193,6 +193,9 @@ public class viewGame extends View {
 	}
 	public static int MAXFIRESTATE = 30;
 	public boolean tryRoolback() {
+		if (dot_to_delete != -1) return true;
+		if (fireState !=0) return true;
+		
 		if (mG.delstack ==0) {
 		    return false;
 		}

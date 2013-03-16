@@ -109,7 +109,7 @@ public class Welcome extends Activity {
 				bundle.putString("school", mTextSchool.getText().toString());
 				bundle.putString("ID", mTextID.getText().toString());
 				if (mTextIPport.getText().toString().equals("AUTO")){
-					bundle.putString("IPport", "218.241.236.109");
+					bundle.putString("IPport", "218.241.236.109:8080");
 				}
 				else 
 				bundle.putString("IPport", mTextIPport.getText().toString());
