@@ -47,8 +47,7 @@ import android.widget.Toast;
 public class Welcome extends Activity {
 	private  EditText mTextSchool;
 	private  EditText mTextID;
-	private  EditText mTextIP;
-	private  EditText mTextport;
+	private  EditText mTextIPport;
 	private  int toUploadCount ;
 	private Button buttonUpload; 
 	@Override
@@ -59,8 +58,7 @@ public class Welcome extends Activity {
 		
 		mTextSchool = (EditText) findViewById(R.id.editschool);
 		mTextID = (EditText) findViewById(R.id.textID);
-		mTextIP = (EditText) findViewById(R.id.textIP);
-		mTextport = (EditText) findViewById(R.id.textPort);
+		mTextIPport = (EditText) findViewById(R.id.textIP);
 
 		Button buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		Button buttonHelp = (Button) findViewById(R.id.buttonHelp);
@@ -76,16 +74,14 @@ public class Welcome extends Activity {
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			mTextSchool.setText(br.readLine());
 			mTextID.setText(br.readLine());
-			mTextIP.setText(br.readLine());
-			mTextport.setText(br.readLine());
+			mTextIPport.setText(br.readLine());
 			is.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			mTextSchool.setText("BUAA");
 			mTextID.setText("TEST");
-			mTextIP.setText("AUTO");
-			mTextport.setText("AUTO");
+			mTextIPport.setText("AUTO");
 		}
 		
 		
@@ -112,13 +108,11 @@ public class Welcome extends Activity {
 				Bundle bundle = new Bundle();
 				bundle.putString("school", mTextSchool.getText().toString());
 				bundle.putString("ID", mTextID.getText().toString());
-				if (mTextIP.getText().toString().equals("AUTO"))
-					bundle.putString("IP", "218.241.236.109");
-				else bundle.putString("IP", mTextIP.getText().toString());
-				if (mTextport.getText().toString().equals("AUTO"))
-					bundle.putString("port", "8080");
+				if (mTextIPport.getText().toString().equals("AUTO")){
+					bundle.putString("IPport", "218.241.236.109");
+				}
 				else 
-				bundle.putString("port", mTextport.getText().toString());
+				bundle.putString("IPport", mTextIPport.getText().toString());
 				save_instance();
 				intent.putExtras(bundle);
 				startActivity(intent);
@@ -201,8 +195,7 @@ public class Welcome extends Activity {
 		
 			br.write(mTextSchool.getText().toString()+"\n");
 		br.write(mTextID.getText().toString()+"\n");
-		br.write(mTextIP.getText().toString()+"\n");
-		br.write(mTextport.getText().toString()+"\n");
+		br.write(mTextIPport.getText().toString()+"\n");
 		br.close();
 		os.close();
 		} catch (IOException e) {
@@ -250,11 +243,9 @@ public class Welcome extends Activity {
 		@Override
 		public void run() {
 			isOK = new String();
-			String server = mTextIP.getText().toString();
-			String port = mTextport.getText().toString();
-			if (server.equals("AUTO")) server = "218.241.236.109";
-			if (port.equals("AUTO")) port = "8080";
-			String url = "http://"+server+":"+port+"/save.php";
+			String server = mTextIPport.getText().toString();
+			if (server.equals("AUTO")) server = "218.241.236.109:8080";
+			String url = "http://"+server+"/save.php"; 
 			 
 			HttpPost httpRequest = new HttpPost(url);
 			ArrayList <NameValuePair> paras = new ArrayList<NameValuePair>();

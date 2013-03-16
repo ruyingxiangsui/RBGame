@@ -68,8 +68,7 @@ public class viewChoose extends View implements OnTouchListener{
             		Bundle newBundle = new Bundle();
             		newBundle.putString("school", bundle.getString("school"));
             		newBundle.putString("ID", bundle.getString("ID"));
-            		newBundle.putString("IP", bundle.getString("IP"));
-            		newBundle.putString("port", bundle.getString("port"));
+            		newBundle.putString("IPport", bundle.getString("IPport"));
             		newBundle.putInt("toPlay", i+1);
             		
             		Intent intent = new Intent();

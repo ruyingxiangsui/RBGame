@@ -27,6 +27,7 @@ public class viewGame extends View {
 				float pX,pY;
 				if (!mG.located) return false;
 				if (fireState !=0) return false;
+				triggerforcecount = MAX_Trigger_count;
 				switch (event.getAction()){
 				case MotionEvent.ACTION_DOWN:
 					pX = event.getX();  pY = event.getY();
@@ -117,6 +118,8 @@ public class viewGame extends View {
 	private float starttouchX, starttouchY;
 	private int dot_selected = - 1;
 	private int dot_to_delete = -1;
+	private int triggerforcecount = 100;
+	static int MAX_Trigger_count = 1000;
 	protected void onDraw(Canvas canvas) {  
         super.onDraw(canvas);  
         if (!mG.located){
@@ -124,8 +127,10 @@ public class viewGame extends View {
         	mG.shuffleDots(ballsize, ballsize, vieww-ballsize, viewh-ballsize);
         }
 
-         if (fireState ==0)
-        mG.triggerForce(vieww);
+         if (fireState ==0 && triggerforcecount-- >=MAX_Trigger_count/2 ) {
+            mG.triggerForce(vieww, (1.0f*triggerforcecount)/MAX_Trigger_count);
+         }
+         
         //canvas.drawText("Matchs"+mG.matchleft, 50,50, font);
         for (int i = 0 ; i < mG.matchleft; i++) {
         	if (i==mG.matchleft-1 && fireState !=0) continue;
@@ -142,8 +147,10 @@ public class viewGame extends View {
     	   float dx = (float) (1.0f* mG.dotX[rmvDot] - (matchX+matchsize));
    	       float dy = 1.0f* mG.dotY[rmvDot]- (matchY+matchsize*0.5f);
    	   
-    	   if (dx*dx+dy*dy < vieww*vieww*0.05f*0.05f)
+    	   if (dx*dx+dy*dy < vieww*vieww*0.05f*0.05f) {
     		   fireState =2;
+    		   dot_to_delete = -1;
+    	   }
     	   canvas.drawBitmap(bitmapmatch, matchX,matchY,font);
        }
        if (fireState >= 2){

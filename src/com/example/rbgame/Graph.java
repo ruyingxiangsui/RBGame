@@ -126,20 +126,38 @@ public class Graph {
 			time ++;
 			if (time > 100) break;
 		}*/
-		for (int i = 0 ; i < 1000; i++) triggerForce(width);
+		for (int i = 2000 ; i >= 1000; i--) triggerForce(width,i*1.0f/100);
 		
 		scaleinto(X2-X1,Y2-Y1,X1,Y1);
 		located = true;
 		
 	}
 	
-	public float triggerForce(int bestlen){
+	public float triggerForce(int bestlen, float f){
 		
-		 float x =  locate(bestlen/3,(float) (bestlen*bestlen),0.03f);
+		 float x =  locate(bestlen/5,(float) (bestlen*bestlen),0.02f,f);
 		// scaleinto(width,height,startx,starty);
 		 return x; 
 	}
-	
+	 private class pair_float{
+		 float x,y;
+		 pair_float(float _x, float _y ) {
+			 x = _x; y = _y;
+		 }
+	 }
+	 private pair_float vector_line_to_point(int a, int b, int c) {
+		 float abx = dotX[b]- dotX[a];
+		 float aby = dotY[b]- dotY[a];
+		 float acx = dotX[c]- dotX[a];
+		 float acy = dotY[c]- dotY[a];
+		 float k = (abx*acx+aby*acy)/(abx*abx+aby*aby);
+		 float tx = k*dotX[a] + (1-k)*dotX[b];
+		 float ty = k*dotY[a] + (1-k)*dotY[b];
+		 return new pair_float(dotX[c]-tx, dotY[c] - ty);
+		 
+		 
+		 
+	 }
 	 private void scaleinto(int width, int height,int STX,int STY) {
 		float x1=21474831.0f, x2 = -x1;
 		float y1= x1, y2 = x2;
@@ -153,7 +171,7 @@ public class Graph {
 		}
 	}
 	
-	private float locate(int bestlength, float G, float switch_ratio) {
+	private float locate(int bestlength, float G, float switch_ratio, float force) {
 		//returns the total drift during one round of force;
 		float [] dx; float [] dy;
 		dx = new float[size]; dy = new float[size];
@@ -173,32 +191,47 @@ public class Graph {
 					iddx = random.nextFloat();
 					iddy = random.nextFloat();
 				}
-				else if ( ddx < 10 && ddx > - 10) 
-					iddx = random.nextFloat();
-				else if (ddy < 10 && ddy > -10)
-					iddy = random.nextFloat();
 				dx[i] += iddx*sucks; dy[i]+=iddy*sucks;
 				dx[j] -= iddx*sucks; dy[j]-=iddy*sucks;
 			}
 
-	   float tooclose =  (bestlength *0.2f); 
-	   
+		   float tooclose =  (bestlength *0.2f);   
+
+	    			
+
+		   float minx = startx + tooclose;
+		   float miny = starty + tooclose;
+		   float maxx = startx+width - tooclose;
+		   float maxy = starty +height - tooclose;
+		   for (int i = 0 ; i < size; i++) {
+			   if (dotX[i] <minx) dx[i]+= sig(minx - dotX[i],tooclose);
+			   if  (dotY[i] <miny) dy[i]+=sig(miny- dotY[i],tooclose);
+			   if (dotX[i] >maxx) dx[i] -=sig( dotX[i]-maxx,tooclose);
+			   if  (dotY[i] >maxy) dy[i] -=sig( dotY[i]-maxy,tooclose);
+			   
+		   }
+	   force *= 0.1f;
+	   for (int i = 0 ; i< size; i++) {
+		   dx[i] *= force;
+		   dy[i] *= force;
+	   }
+	   /*
+       for (int i = 0 ; i < size ; i++) if (dotExist[i])
+    	   for (int j = i+1; j<size; j++) if (dotExist[j] && map[i][j])
+    		   for (int k = 0; k<size; k++) if (dotExist[k] && i!=k && j!=k) {
+    			   pair_float pf = vector_line_to_point(i,j,k);
+    			   if (pf.x*pf.x+pf.y*pf.y < tooclose*tooclose) {
+    				   float ratio = 100.0f*tooclose*tooclose/ (-pf.x*pf.x+pf.y*pf.y + 0.1f*tooclose*tooclose);
+    				   dx[k] += ratio * pf.x;
+    				   dy[k] += ratio * pf.y;
+    			   }
+    		   }
+       */
 	   float ans = (float) 0.0;
 	   for (int i = 0 ; i < size; i++){
-		   dotX[i] += (int) dx[i];
-		   dotY[i] += (int) dy[i];
+		   dotX[i] += ((int) dx[i]);
+		   dotY[i] += ((int) dy[i]);
 		   ans += Math.abs(dx[i])+Math.abs(dy[i]);
-	   }
-	   float minx = startx + tooclose;
-	   float miny = starty + tooclose;
-	   float maxx = startx+width - tooclose;
-	   float maxy = starty +height - tooclose;
-	   for (int i = 0 ; i < size; i++) {
-		   if (dotX[i] <minx) dotX[i] =minx-(float) Math.log(minx- dotX[i]);
-		   if  (dotY[i] <miny) dotY[i] =miny-(float) Math.log(miny- dotY[i]);
-		   if (dotX[i] >maxx) dotX[i] =maxx+(float) Math.log( dotX[i]-maxx);
-		   if  (dotY[i] >maxy) dotY[i] =maxy+(float) Math.log( dotY[i]-maxy);
-		   
 	   }
 	   
 	   /*
@@ -211,7 +244,10 @@ public class Graph {
 	   */
 	   return ans;
 	}
-	
+	float sig(float x,float tooclose) {
+		   if (x>tooclose*0.98) x=tooclose*0.98f;
+		   return tooclose*0.4f/(tooclose - x);
+	   };
 	private int calcIntersection() {
 		int aa = 0;
 		for (int i = 0 ; i < size; i++)
