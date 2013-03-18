@@ -137,7 +137,6 @@ public class viewChoose extends View implements OnTouchListener{
 				  		public void onClick(DialogInterface dialog, int which) {
 						}
 					}).show();
-				
 		} 
 		public viewChoose(Context context) {
 			super(context);	 
