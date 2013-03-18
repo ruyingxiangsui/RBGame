@@ -318,7 +318,7 @@ public class Graph {
 		return true;
 	}
 	public void undelDot() {
-		System.out.println("jere"+delstack);
+		//System.out.println("jere"+delstack);
 		if (delstack==0) return;
 		int qq = deltogethernumber[delstack-1];
 		for (int i = 0 ; i < qq; i++)

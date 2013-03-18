@@ -2,7 +2,9 @@ package com.example.rbgame;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +27,7 @@ public class viewChoose extends View implements OnTouchListener{
 	private int iconsize;
 	private int isdown;
 	public boolean [] doneidlist;
+	public boolean [] uploadedlist;
 	public boolean onTouch(View v, MotionEvent event) {
 					// TODO Auto-generated method stub
 					float pX,pY;
@@ -111,7 +114,7 @@ public class viewChoose extends View implements OnTouchListener{
 			Levelchecker ck = new Levelchecker((Activity) this.getContext());
 			maxplayed = ck.get_maxplayed();
 			doneidlist = new boolean[get_count()];
-			
+			uploadedlist = new boolean[get_count()];
 
 			String [] flist = ((Activity) this.getContext()).fileList();
 			for (int i = 0 ; i < flist.length; i++)
@@ -121,7 +124,20 @@ public class viewChoose extends View implements OnTouchListener{
 					String cc = flist[i].substring(pos1+1,pos2);
 					doneidlist[Integer.parseInt(cc)-1] = true;
 				};
-			
+			for (int i = 0 ; i < flist.length; i++)
+					if (flist[i].startsWith("U"+IDschoolname)) {
+						int pos1 = flist[i].indexOf(".");
+						int pos2 = flist[i].indexOf(".",pos1+1);
+						String cc = flist[i].substring(pos1+1,pos2);
+						uploadedlist[Integer.parseInt(cc)-1] = true;
+					}; 
+			if (stringID.equals("TEST"))
+			(new AlertDialog.Builder((Activity) this.getContext())).setTitle("warning").setMessage("Username TEST, your record will be uploaded anonymously").
+					setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				  		public void onClick(DialogInterface dialog, int which) {
+						}
+					}).show();
+				
 		} 
 		public viewChoose(Context context) {
 			super(context);	 

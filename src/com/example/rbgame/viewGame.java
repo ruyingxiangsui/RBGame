@@ -54,8 +54,15 @@ public class viewGame extends View {
 					pX = event.getX();  pY = event.getY();
 					if (dot_selected >=0){
 						if (click_time_extended == 0){
+							if (mG.matchleft ==0){
+								Toast.makeText(
+										((Activity)viewGame.this.getContext()),"No Matchs left, you have to UNDO~", Toast.LENGTH_LONG).show();
+								dot_selected = -1;
+								
+							}else {
 							dot_to_delete=dot_selected;
 							start_to_delete_dot(dot_to_delete);
+							}
 						}
 						//mG.setDotPosition(dot_selected, (int) (pX),(int) (pY));
 					}
@@ -70,11 +77,6 @@ public class viewGame extends View {
 	}
 	private int rmvDot;
 	private void start_to_delete_dot(int dot_to_delete){
-		if (mG.matchleft ==0) {
-			Toast.makeText(
-					((Activity)this.getContext()),"No Matchs left, you have to UNDO~", Toast.LENGTH_LONG).show();
-			return;
-		}
 		fireState = 1;
 		rmvDot = dot_to_delete;
 		matchX = (float)  mG.matchleft * matchsize;
@@ -192,10 +194,9 @@ public class viewGame extends View {
       
 	}
 	public static int MAXFIRESTATE = 30;
-	public boolean tryRoolback() {
+	public boolean tryRoolback() { // returns true if and only if the event is consumed .
 		if (dot_to_delete != -1) return true;
 		if (fireState !=0) return true;
-		
 		if (mG.delstack ==0) {
 		    return false;
 		}
